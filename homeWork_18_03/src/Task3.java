@@ -9,7 +9,7 @@ public class Task3 {
         try {
             File file = new File("C:\\Users\\User\\IdeaProjects\\text1.txt");
             Scanner sc = new Scanner(file);
-            String text = null;
+            String text = sc.nextLine();
             while (sc.hasNext()) {
                 text += " " + sc.next();
             }

@@ -15,7 +15,7 @@ public class Task3 {
             }
             String[] text1 = text.replaceAll("\\p{Punct}", "").toLowerCase().split(" ");
             for (int i = 1; i < text1.length; i++) {
-                if(map.containsKey(text1[i-1])){ // если слово есть
+                if(map.containsKey(text1[i-1])){
                     Map<String, Integer> temp = map.get(text1[i-1]);
                     if(temp.containsKey(text1[i])){
                         temp.put(text1[i], temp.get(text1[i]) + 1);

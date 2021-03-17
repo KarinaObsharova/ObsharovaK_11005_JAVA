@@ -22,7 +22,7 @@ public class Task2 {
             }
         }
         if (count == 0 || count > 1) {
-            System.out.println("String not correction.");
+            System.out.println("String is not correct.");
         } else System.out.println(stack.pop());
 
 

@@ -32,17 +32,19 @@ public class Main {
 
         TreeSet<Buyer> buyers = new TreeSet<>(nameComparator.thenComparing(cityCountComparator).thenComparing(ordersCountComparator));
         TreeSet<Buyer> buyers1 = new TreeSet<>(ordersCountComparator.thenComparing(cityCountComparator).thenComparing(nameComparator));
-        writeOrderToFile(buyers, buyers1);
+
+        buyers.addAll(buyers);
+        buyers1.addAll(buyers);
+
+        writeOrderToFile(buyers, "sortedByName.txt");
+        writeOrderToFile(buyers1, "sortedByName.txt");
 
     }
 
-    public static void writeOrderToFile(TreeSet<Buyer> buyers, TreeSet<Buyer> buyers1) {
-        try (FileOutputStream fos = new FileOutputStream("./src/sortedByName.txt");
-             ObjectOutputStream out = new ObjectOutputStream(fos);
-             FileOutputStream fos1 = new FileOutputStream("./src/sortedByOrders.txt");
-             ObjectOutputStream out1 = new ObjectOutputStream(fos1)) {
+    public static void writeOrderToFile(TreeSet<Buyer> buyers, String file) {
+        try (FileOutputStream fos = new FileOutputStream(file);
+             ObjectOutputStream out = new ObjectOutputStream(fos)){
             out.writeObject(buyers);
-            out1.writeObject(buyers1);
         } catch (IOException e) {
             e.printStackTrace();
         }

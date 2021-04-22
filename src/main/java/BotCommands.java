@@ -2,7 +2,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 
 public class BotCommands {
-    @Command(name = {"/hi", "/hello","/start"}, description = "Say hi to user", args = "")
+    @Command(name = {"/hi", "/hello", "/start"}, description = "Say hi to user", args = "")
     public String hello(String[] args) {
         return "Hello, my friend";
     }
@@ -25,5 +25,16 @@ public class BotCommands {
     @Command(name = {"/bye", "/goodbye"}, description = "Say bye to user", args = "")
     public String goodBye(String[] args) {
         return "Goodbye";
+    }
+
+    @Command(name = "/fact", description = "return factorial of args[1]", args = "")
+    public String fact(String[] args) {
+        String res = String.join(" ", args);
+        int res1 = Integer.parseInt(res);
+        float buf = 1f;
+        for (int i = 1; i <= res1; i++) {
+            buf *= i;
+        }
+        return Float.toString(buf);
     }
 }

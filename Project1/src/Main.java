@@ -23,7 +23,6 @@ public class Main {
             buyers.add(buyer);
 
         }
-        System.out.println(buyers);
 
         file = new File("./src/discounts.txt");
         sc = new Scanner(file);
@@ -39,8 +38,6 @@ public class Main {
             discounts.add(discount1);
 
         }
-        System.out.println(discounts);
-
         file = new File("./src/products.txt");
         sc = new Scanner(file);
         text = "";
@@ -55,7 +52,6 @@ public class Main {
             products.add(product);
 
         }
-        System.out.println(products);
 
         file = new File("./src/purchases.txt");
         sc = new Scanner(file);
@@ -71,7 +67,6 @@ public class Main {
             purchases.add(purchase);
 
         }
-        System.out.println(purchases);
         ArrayList<Order> orders = new ArrayList<>();
 
         for (int i = 0; i < purchases.toArray().length; i++) {
@@ -89,16 +84,32 @@ public class Main {
                 }
             }
         }
-        System.out.println(orders);
 
 
 
         ArrayList<Order> orders1 = new ArrayList<>();
         for (int i = 0; i < orders.toArray().length; i++) {
-            int discount = orders.get(i).price - ((orders.get(i).discount * orders.get(i).price) / 100);
+            int discount = (orders.get(i).discount * orders.get(i).price) / 100;
             orders1.add(new Order(orders.get(i).nameBuyer, orders.get(i).shopName, orders.get(i).productName, discount));
         }
         System.out.println(orders1);
+
+        ArrayList<Order> result = new ArrayList<>();
+        int count =0;
+        for (int i = 0; i < orders1.size(); i++) {
+            for (int j = 0; j < orders1.size(); j++) {
+                if( orders1.get(i).nameBuyer.equals(orders1.get(j).nameBuyer)
+                        && orders1.get(i).shopName.equals(orders1.get(j).shopName)){
+                    count = count + orders1.get(i).price;
+                    orders1.remove(j);
+
+                }
+            }
+            result.add(new Order(orders1.get(i).nameBuyer, orders1.get(i).shopName, count));
+            count = 0;
+            System.out.println(result);
+        }
+
 
         }
 

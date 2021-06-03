@@ -67,6 +67,7 @@ public class Main {
             purchases.add(purchase);
 
         }
+
         ArrayList<Order> orders = new ArrayList<>();
 
         for (int i = 0; i < purchases.toArray().length; i++) {
@@ -92,7 +93,6 @@ public class Main {
             int discount = (orders.get(i).discount * orders.get(i).price) / 100;
             orders1.add(new Order(orders.get(i).nameBuyer, orders.get(i).shopName, orders.get(i).productName, discount));
         }
-        System.out.println(orders1);
 
         ArrayList<Order> result = new ArrayList<>();
         int count =0;
@@ -107,8 +107,8 @@ public class Main {
             }
             result.add(new Order(orders1.get(i).nameBuyer, orders1.get(i).shopName, count));
             count = 0;
-            System.out.println(result);
         }
+        System.out.println(result);
 
 
         }

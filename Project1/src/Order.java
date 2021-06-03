@@ -32,16 +32,6 @@ public class Order {
     public String toString() {
         return nameBuyer + " " + shopName + " " + discount;
     }
-}
 
-/*    @Override
-    public String toString() {
-        return "Order{" +
-                "nameBuyer='" + nameBuyer + '\'' +
-                ", shopName='" + shopName + '\'' +
-                ", productName='" + productName + '\'' +
-                ", price=" + price +
-                ", discount=" + discount +
-                '}';
-        }*/
+}
 

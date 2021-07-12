@@ -6,8 +6,11 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 import javax.sql.DataSource;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -33,8 +36,23 @@ public class CourseRepositoryJDBCTemplateImpl implements CourseRepository{
     //language=SQL
     private static final String  SELECT_FIND_ALL = "select * from course c order by id";
 
+// айди. учителей и студентов
     //language=SQL
-    private static final String  SELECT_ALL_STUDENTS = "select * from student s, students_courses_relation sc where sc.course_id = ? and cs.student_id = s.id";
+    private static final String  SELECT_ALL_STUDENTS = "select  *" +
+                                                       " from student s inner join students_courses_relation sc" +
+                                                       " on  sc.stud_id = s.id " +
+                                                       " where sc.course_id = ?";
+
+    //language=SQL
+    private static final String  SELECT_ALL_TEACHER = "select  *" +
+            " from teacher t inner join teacher_courses_relation tc on tc.teacher_id = t.id " +
+            " where tc.course_id = ?";
+    //language=SQL
+    private static final String SQL_INSERT = "insert into course(name, date_start, data_end, teacher_id) " +
+            "values (?, ?, ?, ?)";
+
+
+
 
 
 
@@ -55,18 +73,38 @@ public class CourseRepositoryJDBCTemplateImpl implements CourseRepository{
         String name = row.getString("name");
         String dateStart = row.getString("date_start");
         String dateEnd = row.getString("data_end");
-        Teacher teacher = findByIdTeacher(row.getInt("teacher_id")).get();
-        List<Student> students = findAllStudents(row.getInt("id"));
 
-        Course course = new Course(id, name, dateStart, dateEnd, teacher);
-        course.setStudentList(students);
+
+        Course course = new Course(id, name, dateStart, dateEnd);
+
 
         return course;
 
     };
+    private final ResultSetExtractor<Course> courseResultSetExtractor = rs -> {
+        rs.next();
+       return new Course(rs.getInt("id"),
+               rs.getString("name"),
+               rs.getString("date_start"),
+               rs.getString("data_end"));
+    };
+    private final ResultSetExtractor<Student> studentResultSetExtractor = rs -> {
+        rs.next();
+        return new Student(rs.getInt("id"),
+                rs.getString("first_name"),
+                rs.getString("last_name"),
+                rs.getString("number_group"));
+    };
+    private final ResultSetExtractor<Teacher> teacherResultSetExtractor = rs -> {
+        rs.next();
+        return new Teacher(rs.getInt("id"),
+                rs.getString("first_name"),
+                rs.getString("last_name"),
+                rs.getString("experience"));
+    };
 
     private final RowMapper<Student> studentRowMapper = (row, rowNumber) -> {
-        int id = row.getInt("id");
+        Integer id = row.getInt("id");
         String name = row.getString("first_name");
         String lastName = row.getString("last_name");
         String groupNumber = row.getString("number_group");
@@ -80,15 +118,40 @@ public class CourseRepositoryJDBCTemplateImpl implements CourseRepository{
 
     @Override
     public Optional<Course> findById(Integer id) {
+        Course course;
         try {
-            return Optional.of(jdbcTemplate.queryForObject(SELECT_FIND_BY_ID, courseRowMapper,id));
+            course = jdbcTemplate.query(SELECT_FIND_BY_ID, courseResultSetExtractor,id);
         } catch (EmptyResultDataAccessException e){
             return Optional.empty();
         }
+        course.setStudentList(jdbcTemplate.query(SELECT_ALL_STUDENTS,
+                studentRowMapper, id));
+        course.setTeacher(jdbcTemplate.query(SELECT_ALL_TEACHER,
+                teacherResultSetExtractor, id));
+        return Optional.of(course);
 
     }
 
     @Override
+    public void save(Course course){
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement statement = connection.prepareStatement(SQL_INSERT, new String[] {"id"});
+
+            statement.setString(1, course.getName());
+            statement.setString(2, course.getDateStart());
+            statement.setString(3, course.getDateEnd());
+            statement.setInt(4, course.getTeacher().getId());
+
+            return statement;
+        }, keyHolder);
+
+        course.setId(keyHolder.getKey().intValue());
+
+    }
+
+   /* @Override
         public Optional<Teacher> findByIdTeacher(Integer id) {
         try {
             return Optional.of(jdbcTemplate.queryForObject(SELECT_FIND_BY_ID_TEACHER, teacherRowMapper, id));
@@ -104,10 +167,6 @@ public class CourseRepositoryJDBCTemplateImpl implements CourseRepository{
         return jdbcTemplate.query(SELECT_FIND_ALL, courseRowMapper);
     }
 
-    @Override
-    public List<Student> findAllStudents(Integer id) {
-        return jdbcTemplate.query(SELECT_ALL_STUDENTS, studentRowMapper, id);
-    }
 
-
+*/
 }

@@ -61,7 +61,6 @@ public class Student {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", numberGroup='" + numberGroup + '\'' +
-                ", course=" + course.getName() +
                 '}';
     }
 }

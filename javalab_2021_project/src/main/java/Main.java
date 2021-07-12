@@ -1,5 +1,7 @@
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import models.Course;
+import models.Teacher;
 
 import javax.sql.DataSource;
 import java.io.FileReader;
@@ -20,8 +22,12 @@ public class Main {
 
         DataSource dataSource = new HikariDataSource(config);
         CourseRepository courseRepository = new CourseRepositoryJDBCTemplateImpl(dataSource);
-        System.out.println(courseRepository.findById(2));
+        System.out.println(courseRepository.findById(1));
+        /*System.out.println(courseRepository.findAllStudents(4));*/
         /*System.out.println(courseRepository.findAll());*/
+        Teacher teacher = new Teacher( "Александр", "Лицкеевич", "7");
+        Course course = new Course("JAVA", "example", "example", teacher);
+        courseRepository.save(course);
 
 
 

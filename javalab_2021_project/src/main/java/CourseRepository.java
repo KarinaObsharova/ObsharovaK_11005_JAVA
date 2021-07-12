@@ -7,7 +7,8 @@ import java.util.Optional;
 
 public interface CourseRepository {
   Optional<Course> findById(Integer id);
-  Optional<Teacher> findByIdTeacher(Integer id);
- List<Student> findAllStudents(Integer id);
-  List<Course> findAll();
+  /*List<Course> findAll();*/
+  void save(Course course);
+
+
 }

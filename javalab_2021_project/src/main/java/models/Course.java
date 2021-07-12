@@ -12,23 +12,22 @@ public class Course {
 
     private List<Lesson> lessonList;
     private List<Student> studentList;
-    private List<Teacher> teacherList;
 
-    public Course(Integer id, String name, String dateStart, String dateEnd, Teacher teacher) {
-        this.id = id;
+    public Course( String name, String dateStart, String dateEnd, Teacher teacher) {
+
         this.name = name;
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
         this.teacher = teacher;
-    }
 
-    public Course(String name, String dateStart, String dateEnd, List<Lesson> lessonList, List<Student> studentList) {
+    }
+    public Course(Integer id, String name, String dateStart, String dateEnd) {
+        this.id = id;
         this.name = name;
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
-        this.lessonList = lessonList;
-        this.studentList = studentList;
     }
+
 
     public Integer getId() {
         return id;
@@ -78,12 +77,12 @@ public class Course {
         this.studentList = studentList;
     }
 
-    public List<Teacher> getTeacherList() {
-        return teacherList;
+    public Teacher getTeacher() {
+        return teacher;
     }
 
-    public void setTeacherList(List<Teacher> teacherList) {
-        this.teacherList = teacherList;
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
     }
 
     @Override
@@ -93,9 +92,7 @@ public class Course {
                 ", name='" + name + '\'' +
                 ", dateStart='" + dateStart + '\'' +
                 ", dateEnd='" + dateEnd + '\'' +
-                ", lessonList=" + lessonList +
                 ", studentList=" + studentList +
-                ", teacherList=" + teacherList +
                 '}';
     }
 

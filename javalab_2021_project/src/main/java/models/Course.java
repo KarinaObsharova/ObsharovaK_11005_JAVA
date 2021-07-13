@@ -8,21 +8,20 @@ public class Course {
     private String name;
     private String dateStart;
     private String dateEnd;
-    private Teacher teacher;
 
     private List<Lesson> lessonList;
     private List<Student> studentList;
+    private List<Teacher> teacherList;
 
-    public Course( String name, String dateStart, String dateEnd, Teacher teacher) {
+    public Course(){}
 
+    public Course(Integer id, String name, String dateStart, String dateEnd) {
+        this.id = id;
         this.name = name;
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
-        this.teacher = teacher;
-
     }
-    public Course(Integer id, String name, String dateStart, String dateEnd) {
-        this.id = id;
+    public Course( String name, String dateStart, String dateEnd) {
         this.name = name;
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
@@ -77,12 +76,12 @@ public class Course {
         this.studentList = studentList;
     }
 
-    public Teacher getTeacher() {
-        return teacher;
+    public List<Teacher> getTeacherList() {
+        return teacherList;
     }
 
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
+    public void setTeacherList(List<Teacher> teacherList) {
+        this.teacherList = teacherList;
     }
 
     @Override
@@ -92,7 +91,9 @@ public class Course {
                 ", name='" + name + '\'' +
                 ", dateStart='" + dateStart + '\'' +
                 ", dateEnd='" + dateEnd + '\'' +
+                ", lessonList=" + lessonList +
                 ", studentList=" + studentList +
+                ", teacherList=" + teacherList +
                 '}';
     }
 

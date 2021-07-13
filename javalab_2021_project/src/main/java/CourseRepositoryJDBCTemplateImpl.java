@@ -17,9 +17,10 @@ import java.util.*;
 
 public class CourseRepositoryJDBCTemplateImpl implements CourseRepository{
 
+
     private DataSource dataSource;
 
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
 
     public CourseRepositoryJDBCTemplateImpl(DataSource dataSource) {
@@ -47,9 +48,26 @@ public class CourseRepositoryJDBCTemplateImpl implements CourseRepository{
     private static final String  SELECT_ALL_TEACHER = "select  *" +
             " from teacher t inner join teacher_courses_relation tc on tc.teacher_id = t.id " +
             " where tc.course_id = ?";
+
     //language=SQL
-    private static final String SQL_INSERT = "insert into course(name, date_start, data_end, teacher_id) " +
-            "values (?, ?, ?, ?)";
+    private static final String SQL_INSERT_COURSE = "insert into course(name, date_start, data_end) " +
+            "values (?, ?, ?)";
+
+    //language=SQL
+    private static final String SQL_INSERT_TEACHER = "insert into teacher(first_name, last_name, experience) " +
+            "values (?, ?, ?)";
+
+    //language=SQL
+    private static final String SQL_TEACHER_COURSES_RELATION = "insert into teacher_courses_relation(teacher_id, course_id) " +
+            "values (?,?)";
+
+    //language=sql
+    private static final String UPDATE_COURSE =
+            "update course set name = ?, date_start = ?, data_end = ? where id = ?";
+
+    //language=sql
+    private static final String UPDATE_TEACHER = "update teacher set first_name = ?, last_name = ?, experience = ? where id = ?";
+
 
 
 
@@ -63,8 +81,7 @@ public class CourseRepositoryJDBCTemplateImpl implements CourseRepository{
         String experience = row.getString("experience");
 
 
-        Teacher teacher =  new Teacher(id, firstName,  lastName, experience);
-        return teacher;
+        return new Teacher(id, firstName,  lastName, experience);
 
     };
 
@@ -109,8 +126,7 @@ public class CourseRepositoryJDBCTemplateImpl implements CourseRepository{
         String lastName = row.getString("last_name");
         String groupNumber = row.getString("number_group");
 
-        Student student = new Student(id, name, lastName, groupNumber);
-        return student;
+        return new Student(id, name, lastName, groupNumber);
     };
 
 
@@ -124,49 +140,70 @@ public class CourseRepositoryJDBCTemplateImpl implements CourseRepository{
         } catch (EmptyResultDataAccessException e){
             return Optional.empty();
         }
+        assert course != null;
         course.setStudentList(jdbcTemplate.query(SELECT_ALL_STUDENTS,
                 studentRowMapper, id));
-        course.setTeacher(jdbcTemplate.query(SELECT_ALL_TEACHER,
-                teacherResultSetExtractor, id));
+        course.setTeacherList(jdbcTemplate.query(SELECT_ALL_TEACHER,
+                teacherRowMapper, id));
         return Optional.of(course);
 
     }
 
     @Override
-    public void save(Course course){
+    public void save(Course course, Teacher teacher){
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(connection -> {
-            PreparedStatement statement = connection.prepareStatement(SQL_INSERT, new String[] {"id"});
+            PreparedStatement statement = connection.prepareStatement(SQL_INSERT_COURSE, new String[] {"id"});
 
             statement.setString(1, course.getName());
             statement.setString(2, course.getDateStart());
             statement.setString(3, course.getDateEnd());
-            statement.setInt(4, course.getTeacher().getId());
 
             return statement;
         }, keyHolder);
+        Integer courseID = keyHolder.getKey().intValue();
+        course.setId(courseID);
 
-        course.setId(keyHolder.getKey().intValue());
+            jdbcTemplate.update(connection -> {
+                PreparedStatement statement = connection.prepareStatement(SQL_INSERT_TEACHER, new String[]{"id"});
 
+                statement.setString(1, teacher.getFirst_name());
+                statement.setString(2, teacher.getLast_name());
+                statement.setString(3, teacher.getExperience());
+                return statement;
+            }, keyHolder);
+
+            Integer teacherID = keyHolder.getKey().intValue();
+            teacher.setId(teacherID);
+            jdbcTemplate.update(SQL_TEACHER_COURSES_RELATION, teacherID, courseID);
     }
 
-   /* @Override
+    @Override
+    public void update(Course course) {
+
+        jdbcTemplate.update(
+                connection -> {
+                    PreparedStatement statement = connection.prepareStatement(UPDATE_COURSE);
+
+                    statement.setString(1, course.getName());
+                    statement.setString(2, course.getDateStart());
+                    statement.setString(3, course.getDateEnd());
+                    statement.setInt(4, course.getId());
+                    return statement;
+                }
+          );
+        }
+
+
+    @Override
         public Optional<Teacher> findByIdTeacher(Integer id) {
         try {
-            return Optional.of(jdbcTemplate.queryForObject(SELECT_FIND_BY_ID_TEACHER, teacherRowMapper, id));
+            return Optional.ofNullable(jdbcTemplate.queryForObject(SELECT_ALL_TEACHER, teacherRowMapper, id));
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
 
 
-
-    @Override
-    public List<Course> findAll() {
-        return jdbcTemplate.query(SELECT_FIND_ALL, courseRowMapper);
-    }
-
-
-*/
 }

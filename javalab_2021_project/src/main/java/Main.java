@@ -6,7 +6,10 @@ import models.Teacher;
 import javax.sql.DataSource;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -25,9 +28,17 @@ public class Main {
         System.out.println(courseRepository.findById(1));
         /*System.out.println(courseRepository.findAllStudents(4));*/
         /*System.out.println(courseRepository.findAll());*/
-        Teacher teacher = new Teacher( "Александр", "Лицкеевич", "7");
-        Course course = new Course("JAVA", "example", "example", teacher);
-        courseRepository.save(course);
+       /* Teacher teacher = new Teacher( "Александр", "Лицкеевич", "7");
+        Course course = new Course("JAVA", "example", "example");
+        courseRepository.save(course, teacher);*/
+      /*  Course courseMathematics = courseRepository.findById(3).orElse(new Course());
+        courseMathematics.setName("Mathematics");
+       courseMathematics.setDateStart("1.09.21");
+       courseMathematics.setDateEnd("29.05.21");
+
+        courseRepository.update(courseMathematics);*/
+        System.out.println(courseRepository.findByIdTeacher(1));
+
 
 
 

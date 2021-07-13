@@ -1,6 +1,7 @@
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import models.Course;
+import models.Lesson;
 import models.Teacher;
 
 import javax.sql.DataSource;
@@ -25,22 +26,34 @@ public class Main {
 
         DataSource dataSource = new HikariDataSource(config);
         CourseRepository courseRepository = new CourseRepositoryJDBCTemplateImpl(dataSource);
+
         System.out.println(courseRepository.findById(1));
-        /*System.out.println(courseRepository.findAllStudents(4));*/
-        /*System.out.println(courseRepository.findAll());*/
-       /* Teacher teacher = new Teacher( "Александр", "Лицкеевич", "7");
+
+        Teacher teacher = new Teacher("Александр", "Лицкеевич", "7");
         Course course = new Course("JAVA", "example", "example");
-        courseRepository.save(course, teacher);*/
-      /*  Course courseMathematics = courseRepository.findById(3).orElse(new Course());
+        courseRepository.save(course, teacher);
+
+        Course courseMathematics = courseRepository.findById(3).orElse(new Course());
         courseMathematics.setName("Mathematics");
-       courseMathematics.setDateStart("1.09.21");
-       courseMathematics.setDateEnd("29.05.21");
+        courseMathematics.setDateStart("1.09.21");
+        courseMathematics.setDateEnd("29.05.21");
+        courseRepository.update(courseMathematics);
 
-        courseRepository.update(courseMathematics);*/
-        System.out.println(courseRepository.findByIdTeacher(1));
+        System.out.println(courseRepository.findByName("JavaLab"));
 
+        LessonRepository lessonRepository = new LessonRepositoryJDBCTemplateImpl(dataSource);
+        System.out.println(lessonRepository.findById(1));
 
+        Lesson lesson = new Lesson("Function", "Monday", "13:00");
+        lessonRepository.save(lesson, 3);
 
+        Lesson lesson1 = lessonRepository.findById(1).orElse(new Lesson());
+        lesson1.setName("Matrices");
+        lesson1.setDayWeek("Monday");
+        lesson1.setTime("8:00");
+        lessonRepository.update(lesson1);
+
+        System.out.println(lessonRepository.findByName("Matrices"));
 
 
     }

@@ -1,13 +1,10 @@
 package models;
 
-import java.util.List;
-
 public class Teacher {
     private Integer id;
     private String firstName;
     private String lastName;
     private String experience;
-    private Course course;
 
 
     public Teacher(Integer id, String firstName, String lastName, String experience) {
@@ -16,7 +13,8 @@ public class Teacher {
         this.lastName = lastName;
         this.experience = experience;
     }
-    public Teacher( String firstName, String lastName, String experience) {
+
+    public Teacher(String firstName, String lastName, String experience) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.experience = experience;
@@ -63,7 +61,6 @@ public class Teacher {
                 ", first_name='" + firstName + '\'' +
                 ", last_name='" + lastName + '\'' +
                 ", experience='" + experience + '\'' +
-                /*", course=" + course.getName() +*/
                 '}';
     }
 }

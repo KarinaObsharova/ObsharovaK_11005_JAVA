@@ -7,11 +7,17 @@ create table course(
 );
 
 create table lesson(
+                       id serial primary key,
                        name varchar not null,
                        day_week varchar not null,
-                       time varchar not null,
-                       id_course integer,
-                       foreign key (id_course) references course(id)
+                       time varchar not null
+);
+
+create table lesson_courses_relation(
+                                        lesson_id integer not null,
+                                        foreign key (lesson_id) references lesson (id),
+                                        course_id integer not null,
+                                        foreign key (course_id) references course (id)
 );
 
 create table teacher(
@@ -31,7 +37,6 @@ create table teacher_courses_relation(
                                          teacher_id integer,
                                          foreign key (teacher_id) references teacher(id),
                                          course_id integer,
-
                                          foreign key (course_id) references course(id)
 
 );

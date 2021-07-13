@@ -8,31 +8,55 @@ insert into course(name, date_start, data_end)
 values ('Smart Education', '02.07.2021', '30.07.2021');
 
 
-insert into lesson(name, day_week, time, id_course)
-values ('SQL', 'Monday', '14:00', 1);
-insert into lesson(name, day_week, time, id_course)
-values ('JDBC', 'Friday', '14:30', 1);
-insert into lesson(name, day_week, time, id_course)
-values ('Swift', 'Tuesday', '12:00', 2);
-insert into lesson(name, day_week, time, id_course)
-values ('ViewController', 'Saturday', '10:00', 2);
-insert into lesson(name, day_week, time, id_course)
-values ('Kotlin', 'Monday', '11:00', 3);
-insert into lesson(name, day_week, time, id_course)
-values ('Application Kotlin', 'Monday', '11:00', 3);
-insert into lesson(name, day_week, time, id_course)
-values ('Phyton', 'Thursday', '14:00', 4);
-insert into lesson(name, day_week, time, id_course)
-values ('Project', 'Saturday', '15:00', 4);
+insert into lesson(name, day_week, time)
+values ('SQL', 'Monday', '14:00');
+insert into lesson(name, day_week, time)
+values ('JDBC', 'Friday', '14:30');
+insert into lesson(name, day_week, time)
+values ('Swift', 'Tuesday', '12:00');
+insert into lesson(name, day_week, time)
+values ('ViewController', 'Saturday', '10:00');
+insert into lesson(name, day_week, time)
+values ('Kotlin', 'Monday', '11:00');
+insert into lesson(name, day_week, time)
+values ('Application Kotlin', 'Monday', '11:00');
+insert into lesson(name, day_week, time)
+values ('Phyton', 'Thursday', '14:00');
+insert into lesson(name, day_week, time)
+values ('Project', 'Saturday', '15:00');
+
+
+insert into lesson_courses_relation(lesson_id, course_id)
+values (1, 1);
+insert into lesson_courses_relation(lesson_id, course_id)
+values (2, 1);
+insert into lesson_courses_relation(lesson_id, course_id)
+values (3, 2);
+insert into lesson_courses_relation(lesson_id, course_id)
+values (4, 2);
+insert into lesson_courses_relation(lesson_id, course_id)
+values (7, 4);
+insert into lesson_courses_relation(lesson_id, course_id)
+values (8, 4);
+
 
 insert into teacher(first_name, last_name, experience)
 values ('Марсель', 'Сидиков', '10');
 insert into teacher(first_name, last_name, experience)
 values ('Ирина', 'Шахова', '5');
 insert into teacher(first_name, last_name, experience)
-values ('Ирина', 'Шахова', '5');
-insert into teacher(first_name, last_name, experience)
 values ('Михаил', 'Абрамский', '12');
+
+
+insert into teacher_courses_relation(teacher_id, course_id)
+values (1, 1);
+insert into teacher_courses_relation(teacher_id, course_id)
+values (2, 2);
+insert into teacher_courses_relation(teacher_id, course_id)
+values (2, 3);
+insert into teacher_courses_relation(teacher_id, course_id)
+values (3, 4);
+
 
 insert into student(first_name, last_name, number_group)
 values ('Александр', 'Кузнецов', '11-005');
@@ -58,15 +82,6 @@ insert into student(first_name, last_name, number_group)
 values ('Сивачев', 'Никита', '11-006');
 insert into student(first_name, last_name, number_group)
 values ('Калугин', 'Артем', '11-004');
-
-insert into teacher_courses_relation(teacher_id, course_id)
-values (1, 1);
-insert into teacher_courses_relation(teacher_id, course_id)
-values (2, 2);
-insert into teacher_courses_relation(teacher_id, course_id)
-values (2, 3);
-insert into teacher_courses_relation(teacher_id, course_id)
-values (3, 4);
 
 insert into students_courses_relation(stud_id, course_id)
 values (1, 1);

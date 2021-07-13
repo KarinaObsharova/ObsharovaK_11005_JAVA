@@ -1,6 +1,5 @@
 package models;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Course {
@@ -13,7 +12,8 @@ public class Course {
     private List<Student> studentList;
     private List<Teacher> teacherList;
 
-    public Course(){}
+    public Course() {
+    }
 
     public Course(Integer id, String name, String dateStart, String dateEnd) {
         this.id = id;
@@ -21,7 +21,8 @@ public class Course {
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
     }
-    public Course( String name, String dateStart, String dateEnd) {
+
+    public Course(String name, String dateStart, String dateEnd) {
         this.name = name;
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
@@ -91,7 +92,6 @@ public class Course {
                 ", name='" + name + '\'' +
                 ", dateStart='" + dateStart + '\'' +
                 ", dateEnd='" + dateEnd + '\'' +
-                ", lessonList=" + lessonList +
                 ", studentList=" + studentList +
                 ", teacherList=" + teacherList +
                 '}';

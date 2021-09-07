@@ -4,7 +4,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="signUpService" class="SignUpService">
-        <constructor-arg name="passwordBlackList" ref="passwordBlackListFile"/>
+        <constructor-arg name="passwordBlackList" ref="passwordBlackListJDBC"/>
         <constructor-arg name="emailValidator" ref="emailValidator"/>
     </bean>
 
@@ -17,28 +17,20 @@
     <bean id="emailValidator" class="EmailValidatorRegexImpl">
         <property name="regex" value=".+@.+"/>
     </bean>
-
-    <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource">
         <property name="poolName" value="springHikariCP" />
         <property name="connectionTestQuery" value="SELECT 1" />
-        <property name="maximumPoolSize" value="20" />
+        <property name="maximumPoolSize" value="10" />
         <property name="idleTimeout" value="30000" />
-
-        <property name="dataSourceProperties" >
+        <property name="dataSourceClassName" value="org.postgresql.ds.PGSimpleDataSource" />
+        <property name="dataSourceProperties">
             <props>
-                <prop key="dataSource.url">jdbc-url=jdbc:postgresql://localhost:5432/01.SpringDemo</prop>
-                <prop key="dataSource.user">postgres</prop>
-                <prop key="dataSource.password">qwerty007</prop>
+                <prop key="url">jdbc:postgresql://localhost:5432/javalab_password_black_list</prop>
+                <prop key="user">postgres</prop>
+                <prop key="password">qwerty007</prop>
             </props>
         </property>
-        <property name="driverClassName"
-                  value="org.postgresql.Driver" />
     </bean>
-
-    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource">
-        <constructor-arg ref="hikariConfig"/>
-    </bean>
-
 
     <bean id="passwordBlackListJDBC" class="PasswordBlackListJDBCImpl">
         <constructor-arg name="dataSource" ref="dataSource"/>

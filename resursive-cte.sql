@@ -16,22 +16,6 @@ insert into graph(from_node, to_node, weight) VALUES ('V', 'Y', 2);
 insert into graph(from_node, to_node, weight) VALUES ('Y', 'V', 7);
 insert into graph(from_node, to_node, weight) VALUES ('Y', 'S', 3);
 
-WITH recursive journey_cte (TO_TOWN2, STEPS, DISTANCE, WAY)
-                   AS
-                   (SELECT DISTINCT FROM_TOWN, 0, 0, 'KAZAN'
-                    FROM JOURNEY
-                    WHERE FROM_TOWN = 'KAZAN'
-                    UNION ALL
-                    SELECT TO_TOWN,
-                           departure.STEPS + 1,
-                           departure.DISTANCE + arrival.KILOMETERS,
-                           departure.WAY || ', ' || arrival.TO_TOWN
-                    FROM JOURNEY AS arrival
-                             INNER JOIN journey_cte AS departure
-                                        ON departure.TO_TOWN2 = arrival.FROM_TOWN)
-SELECT * FROM journey_cte WHERE TO_TOWN2 = 'SPB';
-
-
 
 WITH recursive
     way_from_s_to_y(to_node2, steps, DISTANCE, way)
